@@ -1,49 +1,64 @@
 import { ProductCard } from "@/app/components";
-import { useRouter } from "next/router"
-import styles from './home.module.css'
+import { useRouter } from "next/router";
+import styles from "./home.module.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function Products(){
+type Product = {
+    id: number;
+    name: string;
+    image: string;
+};
+
+const api = axios.create({
+    baseURL: "http://127.0.0.1:8000",
+});
+
+export default function Products() {
     const router = useRouter();
-    function handleClick(){
-        console.log("Button clicked")
-        router.back();
+    const [products, setProducts] = useState<Product[]>([]);
 
+  async function fetchProducts() {
+    try {
+        const response = await api.get("/products?page=1&size=6");
+
+        console.log("DATA:", response.data);
+
+        const mapped = response.data.data.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            description: p.description ?? "Sem descrição",
+            image: "https://via.placeholder.com/150"
+        }));
+
+        setProducts(mapped);
+
+    } catch (error) {
+        console.error("Erro:", error);
     }
-    return(
+}
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    return (
         <>
             <h1>Products</h1>
-            <button onClick={handleClick}>Navegar de volta</button>
+
+            <button onClick={() => router.back()}>
+                Voltar
+            </button>
 
             <div className={styles.productCardList}>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 01"/>
-            <ProductCard 
-                name = "Revista" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 02"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 03"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 04"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 05"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 06"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 07"/>
-                   <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 01"/>
-            <ProductCard 
-                name = "Revista" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 02"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 03"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 04"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 05"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 06"/>
-            <ProductCard 
-                name = "Perfume" image="https://fisioanimal.com/blog/wp-content/uploads/2019/06/shutterstock_474506101-752x470.jpg" description="Descrição 07"/>
+                {products.map((p) => (
+                    <ProductCard
+                        key={p.id}
+                        name={p.name}
+                        image={p.image}
+                    />
+                ))}
             </div>
         </>
-    )
+    );
 }
