@@ -13,8 +13,6 @@ export default function Header() {
                 height={120}
             />
 
-            <h2>RiseCosmeticos</h2>
-
             <div className={styles.searchBox}>
                 <MagnifyingGlass className={styles.icon} size={18} />
                 <input

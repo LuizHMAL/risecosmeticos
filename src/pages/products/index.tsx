@@ -47,9 +47,7 @@ export default function Products() {
         <>
             <h1>Products</h1>
 
-            <button onClick={() => router.back()}>
-                Voltar
-            </button>
+       
 
             <div className={styles.productCardList}>
                 {products.map((p) => (
