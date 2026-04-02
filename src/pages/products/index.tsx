@@ -21,7 +21,7 @@ export default function Products() {
 
   async function fetchProducts() {
     try {
-        const response = await api.get("/products?page=1x&size=6");
+        const response = await api.get("/products?page=1&size=6");
 
         console.log("DATA:", response.data);
 
