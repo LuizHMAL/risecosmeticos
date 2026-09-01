@@ -1,33 +1,33 @@
-import Link from "next/link";
 import Header from "@/app/components/header";
 import { Carrousel } from "@/app/components/carrousel";
-import Products from "./products";
+import { ProductsSection } from "./products";
+import Footer from "@/app/components/footer";
+import Head from "next/head";
 
-
-
-export default function Home(){
-    return(
+export default function Home() {
+    return (
         <>
-            <Header />
-            <Carrousel slides={[
-                {
-                    imagem: "https://via.placeholder.com/800x400?text=Slide+1",
-                    titulo: "Slide 1",
-                    descricao: "Descrição do slide 1"
-                },
-                {
-                    imagem: "https://via.placeholder.com/800x400?text=Slide+2",
-                    titulo: "Slide 2",
-                    descricao: "Descrição do slide 2"
-                }
-            ]} />
-            <Products />
+            <Head>
+                <title>Rise Sousa Beauty - Sua beleza em primeiro lugar</title>
+                <meta name="description" content="Descubra os melhores cosméticos, maquiagens e produtos de beleza na Rise Sousa Beauty." />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+            </Head>
 
-            
-            <h1>Home</h1>
+            <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+                {/* Cabeçalho com logo animada e navegação */}
+                <Header />
 
-            
-            <Link href = "/products">Produtos</Link> 
+                <main style={{ flex: 1 }}>
+                    {/* Banner Hero com Linha Vegana */}
+                    <Carrousel />
+
+                    {/* Seção de Produtos em Destaque */}
+                    <ProductsSection />
+                </main>
+
+                {/* Rodapé com Newsletter e Links */}
+                <Footer />
+            </div>
         </>
-    )
+    );
 }
